@@ -237,7 +237,7 @@ function App() {
 
 
   return (
-    <>
+    <div id="main">
 
      States: <select id="state" onChange={stateChanged}>
         {getState}
@@ -263,7 +263,7 @@ function App() {
         <div id="landmark-description">{landmark_des}</div>
       </div>
 
-    </>
+    </div>
   )
 }
 
