@@ -1,3 +1,4 @@
+
 import React, { useState, useReducer, useEffect } from "react";
 import "./../styles/App.css";
 
@@ -140,171 +141,130 @@ const states = [{
 
 function App() {
 
-  const [fetchCity, setCity] = useState([]);
-  const [fetchLandmark, setLandmark] = useState([]);
-  const [getData, setData] = useState("");
-  const [getData2, setData2] = useState("");
-  const [getAbout, setAbout] = useState({
-    title: states[0].name,
-    des: states[0].description
-  });
+  const [getState, setState] = useState("");
+  const [getCity, setCity] = useState("");
+  const [getLandmark, setLandmark] = useState("");
 
-  const [getAbout3, setAbout3] = useState({
-    title: states[0].city[0].name,
-    des: states[0].city[0].description
-  });
-  const [getAbout4, setAbout4] = useState({
-    title: states[0].city[0].landmarks[0].name,
-    des: states[0].city[0].landmarks[0].description
-  });
-  const [getIndex, setIndex] = useState(0);
-  const [getIndex2, setIndex2] = useState(0);
+
+  const [getStateIndex, setStateIndex] = useState(0);
+  const [getCityIndex, setCityIndex] = useState(0);
+  const [getLandmarkIndex, setLandmarkIndex] = useState(0);
+
+  const [state_title, set_state_title] = useState("");
+  const [city_title, set_city_title] = useState("");
+  const [landmark_title, set_landmark_title] = useState("");
+
+  const [state_des, set_state_des] = useState("");
+  const [city_des, set_city_des] = useState("");
+  const [landmark_des, set_landmark_des] = useState("");
+
   useEffect(() => {
-    popOUTCity();
-    popOUTLandmark();
-  }, [fetchCity,fetchLandmark]);
+    popStates();
+    popCity(getStateIndex);
+    popLandmark(getCityIndex, getStateIndex);
+    chaneTitle();
+    chaneDescription();
 
-    const changeLandmark = (e) => {
-    const ID = e.target.id;
-    const selectCity = document.getElementById(ID);
-    const changeVal = selectCity.value;
-    setIndex2(changeVal);
-    console.log(changeVal);
-    setAbout3(prev =>
-      ({ ...prev, title: states[getIndex].city[changeVal].name })
-    );
-    setAbout3(prev =>
-      ({ ...prev, des: states[getIndex].city[changeVal].description })
-    );
-    setLandmark(states[getIndex].city[changeVal].landmarks);
+  }, [getStateIndex, getCityIndex,getLandmarkIndex]);
+
+  function popStates(e) {
+    const stateList = states.map((item, index) => {
+      return (
+        <option value={index}>{item.name}</option>
+      )
+    });
+    setState(stateList);
+   
   }
-    
-  const  changeLandmarkSelf=(e)=>{
-    const ID = e.target.id;
-    const selectCity = document.getElementById(ID);
-    const changeVal = selectCity.value;
-    setAbout4(prev =>
-      ({ ...prev, title: states[getIndex].city[getIndex2].landmarks[changeVal].name})
-    );
-    setAbout4(prev =>
-      ({ ...prev, des: states[getIndex].city[getIndex2].landmarks[changeVal].description })
-    );
-  }
-
-  function popOUTLandmark() {
-          if(fetchLandmark.length==0){
-            const data = fetchLandmark.map((land,index)=>{
-            return (
-              <option value={index}>{land.name}</option>
-            );
-        
-          }); 
-          setData2(data);
-        }
-        const data = fetchLandmark.map((land,index)=>{
-         return (
-            <option value={index}>{land.name}</option>
-         );
-
-       }) 
-        setData2(data);
-      
-      }
-
   
+  
+  function chaneTitle(){
+      const stateTitle = states[getStateIndex].name;
+      const cityTitle =  states[getStateIndex].city[getCityIndex].name;
+      const landmarkTitle = states[getStateIndex].city[getCityIndex].landmarks[getLandmarkIndex].name;
+      set_state_title(stateTitle);
+      set_city_title(cityTitle);
+      set_landmark_title(landmarkTitle);
+  }
 
-  //  ======================CIty Part==========================
-  const chaneCity = (e) => {
-    
-    const ID = e.target.id;
-    const selectState = document.getElementById(ID);
-    const changeVal = selectState.value;
-    setIndex(changeVal);
-    setCity(states[changeVal].city);
-    setAbout(prev =>
-      ({ ...prev, title: states[changeVal].name })
-    );
-    setAbout(prev =>
-      ({ ...prev, des: states[changeVal].description })
-    );
-    console.log(fetchCity);
+  function chaneDescription(){
+    const stateDes = states[getStateIndex].description;
+    const cityDes =  states[getStateIndex].city[getCityIndex].description;
+    const landmarkDes = states[getStateIndex].city[getCityIndex].landmarks[getLandmarkIndex].description;
+    set_state_des(stateDes);
+    set_city_des(cityDes);
+    set_landmark_des(landmarkDes);
+}
+
+  const stateChanged = (e) => {
+    const id = e.target.value;
+    setStateIndex(id);
+    setCityIndex(0);
+    popCity(getStateIndex);
+  }
+
+  const cityChanged = (e) => {
+    const id = e.target.value;
+    setCityIndex(id);
+    setLandmarkIndex(0);
+    popLandmark(getCityIndex, getStateIndex);
+  }
+  const landmarkChanged = (e) => {
+    const id = e.target.value;
+    setLandmarkIndex(id);
+    chaneTitle();
+    chaneDescription();
+  }
+  // console.log(getStateIndex);
+
+  function popCity(StateIndex) {
+    const cityList = states[StateIndex].city.map((item, index) => {
+      return (
+        <option value={index}>{item.name}</option>
+      )
+    });
+    setCity(cityList);
+  }
+
+  function popLandmark(CityIndex, StateIndex) {
+    const landmarkList = states[StateIndex].city[CityIndex].landmarks.map((item, index) => {
+      return (
+        <option value={index}>{item.name}</option>
+      )
+    });
+    setLandmark(landmarkList);
   }
 
 
-  function popOUTCity() {
-
-    if (fetchCity.length == 0) {
-      const data = states[0].city.map((city, index) => {
-        return (
-          <option value={index}>{city.name}</option>
-        )
-      });
-
-      console.log(data);
-      setData(data);
-    } else {
-      const data = fetchCity.map((city, index) => {
-        return (
-          <option value={index}>{city.name}</option>
-        )
-      });
-      console.log(data);
-      setData(data);
-    }
-
-  }
-  //  ==========================End City Part===============================
-
-
-
-  // Do not alter/remove main div
   return (
-    <div id="main">
+    <>
 
-      <label>State</label>
-      <select id="state" onChange={chaneCity}>
-        {
-          states.map((state, index) => {
-            return (
-              <option value={index}>{state.name}</option>
-            )
-          })
-        }
+      <select id="state" onChange={stateChanged}>
+        {getState}
       </select>
 
-      <label>City</label>
-      <select id="city" onChange={changeLandmark}>
-        {getData}
+      <select id="city" onChange={cityChanged} >
+        {getCity}
       </select>
-
-      <label>Landmark</label>
-      <select id="landmark" onChange={changeLandmarkSelf}>
-        {getData2}
+      <select id="landmark" onChange={landmarkChanged}>
+        {getLandmark}
       </select>
-
 
       <div id="state-name">
-        <div id="state-title">
-          {getAbout.title}
-        </div>
-        <div id="state-description">
-          {getAbout.des}
-        </div>
-
+        <div id="state-title">{state_title}</div>
+        <div id="state-description">{state_des}</div>
       </div>
-
       <div id="city-name">
-        <div id="city-title">{getAbout3.title}</div>
-        <div id="city-description">{getAbout3.des}</div>
+        <div id="city-title">{city_title}</div>
+        <div id="city-description">{city_des}</div>
       </div>
-
       <div id="landmark-name">
-        <div id="landmark-title">{getAbout4.title}</div>
-        <div id="landmark-description">{getAbout4.des}</div>
+        <div id="landmark-title">{landmark_title}</div>
+        <div id="landmark-description">{landmark_des}</div>
       </div>
 
-    </div>
-  );
+    </>
+  )
 }
 
 
