@@ -13,4 +13,21 @@ button{
 
 .bg-pink{
 	background-color:pink;
+}#state-name{
+	border:1px solid #333;
+	padding:12px;
+	margin-top:12px;
+	background:#454fff;
+}
+#city-name{
+	border:1px solid #333;
+	padding:12px;
+	margin-top:12px;
+	background:#fff45f;
+}
+#landmark-name{
+	border:1px solid #333;
+	padding:12px;
+	margin-top:12px;
+	background:#056ddc;
 }
