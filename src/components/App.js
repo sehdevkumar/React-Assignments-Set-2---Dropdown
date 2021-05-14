@@ -239,14 +239,14 @@ function App() {
   return (
     <>
 
-      <select id="state" onChange={stateChanged}>
+     States: <select id="state" onChange={stateChanged}>
         {getState}
       </select>
 
-      <select id="city" onChange={cityChanged} >
+     Cities: <select id="city" onChange={cityChanged} >
         {getCity}
       </select>
-      <select id="landmark" onChange={landmarkChanged}>
+     Towns: <select id="landmark" onChange={landmarkChanged}>
         {getLandmark}
       </select>
 
